@@ -1,0 +1,34 @@
+name: hr_run_attendance_check_flow
+department: hr
+role: hr_manager
+priority: medium
+environment: staging
+
+preconditions:
+  login_required: true
+  company: "Alamdar Vapotherm Co Ltd"
+  fiscal_year: 2026
+  depends_on:
+    - hr_create_employee_flow
+
+steps:
+  - action: navigate
+    data:
+      module: hr
+      sub_module: attendance
+
+  - action: check_attendance_report
+    data:
+      employee_ref: "Employee {{ run_id }}"
+      month: "{{ current_month }}"
+      year: "{{ current_year }}"
+
+  - action: verify_record
+    target: attendance_report
+    expected_status: "Generated"
+
+assertions:
+  - type: ui_contains
+    text: "Attendance Report"
+  - type: field_not_empty
+    field: total_working_days

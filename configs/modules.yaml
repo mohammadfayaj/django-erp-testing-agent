@@ -1,0 +1,51 @@
+# Module registry
+# Maps department names to their ERP URL paths and key entry points.
+
+modules:
+  procurement:
+    label: "Procurement"
+    url_path: "/procurement/"
+    sub_modules:
+      vendors: "/procurement/vendor/"
+      purchase_orders: "/procurement/purchase-order/"
+      goods_receipts: "/procurement/grn/"
+
+  sales:
+    label: "Sales"
+    url_path: "/sales/"
+    sub_modules:
+      customers: "/sales/customer/"
+      sales_orders: "/sales/order/"
+      invoices: "/sales/invoice/"
+
+  hr:
+    label: "Human Resources"
+    url_path: "/hr/"
+    sub_modules:
+      employees: "/hr/employee/"
+      attendance: "/hr/attendance/"
+      leave: "/hr/leave/"
+
+  payroll:
+    label: "Payroll"
+    url_path: "/payroll/"
+    sub_modules:
+      salary_structures: "/payroll/salary-structure/"
+      payslips: "/payroll/payslip/"
+      payroll_runs: "/payroll/run/"
+
+  accounting:
+    label: "Accounting"
+    url_path: "/accounting/"
+    sub_modules:
+      journal_entries: "/accounting/journal-entry/"
+      chart_of_accounts: "/accounting/account/"
+      financial_statements: "/accounting/reports/"
+
+  reporting:
+    label: "Reporting"
+    url_path: "/reports/"
+    sub_modules:
+      balance_sheet: "/reports/balance-sheet/"
+      profit_loss: "/reports/profit-loss/"
+      trial_balance: "/reports/trial-balance/"

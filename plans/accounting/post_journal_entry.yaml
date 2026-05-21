@@ -1,0 +1,47 @@
+name: accounting_post_journal_entry_flow
+department: accounting
+role: accountant
+priority: high
+environment: staging
+
+preconditions:
+  login_required: true
+  company: "Alamdar Vapotherm Co Ltd"
+  fiscal_year: 2026
+
+steps:
+  - action: navigate
+    data:
+      module: accounting
+      sub_module: journal_entries
+
+  - action: create_journal_entry
+    data:
+      journal_date: "{{ today }}"
+      reference: "JE-AUTO-{{ run_id }}"
+      lines:
+        - account_code: "1010"
+          account_name: "Cash"
+          debit: 5000.00
+          credit: 0.00
+        - account_code: "4010"
+          account_name: "Revenue"
+          debit: 0.00
+          credit: 5000.00
+
+  - action: post_journal_entry
+    data: {}
+
+  - action: verify_record
+    target: journal_entry
+    expected_status: "Posted"
+
+assertions:
+  - type: ui_contains
+    text: "Journal Entry Posted"
+  - type: field_equals
+    field: status
+    expected: "Posted"
+  - type: business_rule
+    rule: debit_equals_credit
+    model: journal_entry

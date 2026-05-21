@@ -1,0 +1,41 @@
+name: procurement_post_grn_flow
+department: procurement
+role: purchase_manager
+priority: high
+environment: staging
+
+preconditions:
+  login_required: true
+  company: "Alamdar Vapotherm Co Ltd"
+  fiscal_year: 2026
+  depends_on:
+    - procurement_create_purchase_order_flow
+
+steps:
+  - action: navigate
+    data:
+      module: procurement
+      sub_module: goods_receipts
+
+  - action: create_grn
+    data:
+      purchase_order_ref: "{{ context.purchase_order_id }}"
+      received_date: "{{ today }}"
+      warehouse: "Main Warehouse"
+
+  - action: post_grn
+    data: {}
+
+  - action: verify_record
+    target: grn
+    expected_status: "Posted"
+
+assertions:
+  - type: ui_contains
+    text: "GRN Posted"
+  - type: field_equals
+    field: status
+    expected: "Posted"
+  - type: business_rule
+    rule: inventory_updated
+    model: stock_move

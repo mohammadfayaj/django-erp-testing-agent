@@ -1,0 +1,9 @@
+app_env: dev
+erp_base_url: "http://dev-erp.internal:8000"
+erp_admin_url: "http://dev-erp.internal:8000/admin/"
+playwright:
+  headless: true
+  slow_mo: 0
+  timeout: 30000
+logging:
+  level: INFO

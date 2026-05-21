@@ -1,0 +1,43 @@
+name: sales_create_sales_order_flow
+department: sales
+role: sales_user
+priority: high
+environment: staging
+
+preconditions:
+  login_required: true
+  company: "Alamdar Vapotherm Co Ltd"
+  fiscal_year: 2026
+  depends_on:
+    - sales_create_customer_flow
+
+steps:
+  - action: navigate
+    data:
+      module: sales
+      sub_module: sales_orders
+
+  - action: create_sales_order
+    data:
+      customer_name_ref: "Auto Customer {{ run_id }}"
+      order_date: "{{ today }}"
+      delivery_date: "{{ today_plus_7 }}"
+      items:
+        - description: "PIR Board"
+          quantity: 5
+          unit_price: 200.00
+          tax_code: "VAT15"
+
+  - action: submit_form
+    data: {}
+
+  - action: verify_record
+    target: sales_order
+    expected_status: "Draft"
+
+assertions:
+  - type: field_equals
+    field: status
+    expected: "Draft"
+  - type: ui_contains
+    text: "Saved successfully"

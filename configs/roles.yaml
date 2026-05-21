@@ -1,0 +1,53 @@
+# Role definitions
+# Each role maps to a set of credentials and accessible modules.
+
+roles:
+  admin:
+    username: admin
+    password: "${ERP_ADMIN_PASSWORD}"
+    modules:
+      - procurement
+      - sales
+      - hr
+      - payroll
+      - accounting
+      - reporting
+
+  purchase_manager:
+    username: purchase_mgr
+    password: "${PURCHASE_MGR_PASSWORD}"
+    modules:
+      - procurement
+
+  sales_user:
+    username: sales_user
+    password: "${SALES_USER_PASSWORD}"
+    modules:
+      - sales
+
+  hr_manager:
+    username: hr_manager
+    password: "${HR_MANAGER_PASSWORD}"
+    modules:
+      - hr
+
+  payroll_officer:
+    username: payroll_officer
+    password: "${PAYROLL_OFFICER_PASSWORD}"
+    modules:
+      - payroll
+
+  accountant:
+    username: accountant
+    password: "${ACCOUNTANT_PASSWORD}"
+    modules:
+      - accounting
+      - reporting
+
+  finance_manager:
+    username: finance_manager
+    password: "${FINANCE_MANAGER_PASSWORD}"
+    modules:
+      - accounting
+      - payroll
+      - reporting
