@@ -1,0 +1,44 @@
+name: sales_post_invoice_flow
+department: sales
+role: sales_user
+priority: high
+environment: staging
+
+preconditions:
+  login_required: true
+  company: "Alamdar Vapotherm Co Ltd"
+  fiscal_year: 2026
+  depends_on:
+    - sales_create_sales_order_flow
+
+steps:
+  - action: navigate
+    data:
+      module: sales
+      sub_module: invoices
+
+  - action: create_invoice
+    data:
+      sales_order_ref: "{{ context.sales_order_id }}"
+      invoice_date: "{{ today }}"
+      due_date: "{{ today_plus_30 }}"
+
+  - action: post_invoice
+    data: {}
+
+  - action: verify_record
+    target: invoice
+    expected_status: "Posted"
+
+assertions:
+  - type: ui_contains
+    text: "Invoice Posted"
+  - type: field_equals
+    field: status
+    expected: "Posted"
+  - type: business_rule
+    rule: receivable_account_updated
+    model: journal_entry
+  - type: business_rule
+    rule: vat_amount_correct
+    model: invoice

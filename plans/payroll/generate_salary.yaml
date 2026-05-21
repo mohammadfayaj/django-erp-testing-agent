@@ -1,0 +1,49 @@
+name: payroll_generate_salary_flow
+department: payroll
+role: payroll_officer
+priority: high
+environment: staging
+
+preconditions:
+  login_required: true
+  company: "Alamdar Vapotherm Co Ltd"
+  fiscal_year: 2026
+  depends_on:
+    - hr_create_employee_flow
+
+steps:
+  - action: navigate
+    data:
+      module: payroll
+      sub_module: payroll_runs
+
+  - action: create_payroll_run
+    data:
+      month: "{{ current_month }}"
+      year: "{{ current_year }}"
+      department: "Engineering"
+
+  - action: generate_payslips
+    data:
+      employee_ref: "Employee {{ run_id }}"
+
+  - action: validate_payslip
+    data:
+      employee_ref: "Employee {{ run_id }}"
+      expected_basic: 8000.00
+
+  - action: post_payroll
+    data: {}
+
+assertions:
+  - type: ui_contains
+    text: "Payroll Posted"
+  - type: field_equals
+    field: status
+    expected: "Posted"
+  - type: business_rule
+    rule: net_salary_correct
+    model: payslip
+  - type: business_rule
+    rule: debit_equals_credit
+    model: journal_entry

@@ -1,0 +1,37 @@
+name: sales_create_customer_flow
+department: sales
+role: sales_user
+priority: high
+environment: staging
+
+preconditions:
+  login_required: true
+  company: "Alamdar Vapotherm Co Ltd"
+  fiscal_year: 2026
+
+steps:
+  - action: navigate
+    data:
+      module: sales
+      sub_module: customers
+
+  - action: create_customer
+    data:
+      customer_name: "Auto Customer {{ run_id }}"
+      vat_number: "310000000000003"
+      country: "SA"
+      city: "Jeddah"
+      credit_limit: 50000.00
+      payment_terms: "Net 30"
+
+  - action: verify_record
+    target: customer
+    expected_status: "Active"
+
+assertions:
+  - type: record_exists
+    model: customer
+    name_field: customer_name
+    name_value: "Auto Customer {{ run_id }}"
+  - type: ui_contains
+    text: "Saved successfully"

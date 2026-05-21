@@ -1,0 +1,9 @@
+app_env: local
+erp_base_url: "http://localhost:8000"
+erp_admin_url: "http://localhost:8000/admin/"
+playwright:
+  headless: false      # show browser window during local development
+  slow_mo: 50
+  timeout: 60000
+logging:
+  level: DEBUG

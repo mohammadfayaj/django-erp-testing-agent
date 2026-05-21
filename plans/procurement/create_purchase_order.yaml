@@ -1,0 +1,45 @@
+name: procurement_create_purchase_order_flow
+department: procurement
+role: purchase_manager
+priority: high
+environment: staging
+
+preconditions:
+  login_required: true
+  company: "Alamdar Vapotherm Co Ltd"
+  fiscal_year: 2026
+  depends_on:
+    - procurement_create_vendor_flow
+
+steps:
+  - action: navigate
+    data:
+      module: procurement
+      sub_module: purchase_orders
+
+  - action: create_purchase_order
+    data:
+      vendor_name_ref: "Auto Vendor {{ run_id }}"
+      order_date: "{{ today }}"
+      delivery_date: "{{ today_plus_7 }}"
+      items:
+        - description: "PIR Board"
+          quantity: 10
+          unit_price: 120.00
+          tax_code: "VAT15"
+
+  - action: submit_form
+    data: {}
+
+  - action: verify_record
+    target: purchase_order
+    expected_status: "Draft"
+
+assertions:
+  - type: ui_contains
+    text: "Purchase Order"
+  - type: field_equals
+    field: status
+    expected: "Draft"
+  - type: ui_contains
+    text: "Saved successfully"

@@ -1,0 +1,10 @@
+app_env: staging
+erp_base_url: "http://staging-erp.internal:8000"
+erp_admin_url: "http://staging-erp.internal:8000/admin/"
+playwright:
+  headless: true
+  slow_mo: 0
+  timeout: 30000
+logging:
+  level: INFO
+db_verify_dsn: "postgresql://readonly:readonly@staging-db:5432/erp"

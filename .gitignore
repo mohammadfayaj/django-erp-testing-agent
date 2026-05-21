@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+*.coveragerc
+
+# Ruff / mypy cache
+.ruff_cache/
+.mypy_cache/
+
+# Environment files (with secrets)
+.env
+
+# Playwright
+playwright-report/
+
+# Artifacts (runtime outputs – keep the folder structure, exclude content)
+artifacts/runs/*
+artifacts/screenshots/*
+artifacts/traces/*
+artifacts/videos/*
+artifacts/reports/*
+!artifacts/runs/.gitkeep
+!artifacts/screenshots/.gitkeep
+!artifacts/traces/.gitkeep
+!artifacts/videos/.gitkeep
+!artifacts/reports/.gitkeep
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# macOS
+.DS_Store

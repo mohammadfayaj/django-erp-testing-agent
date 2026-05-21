@@ -1,0 +1,40 @@
+# ERP Test Agent – Global Settings
+
+app:
+  name: erp-test-agent
+  version: "0.1.0"
+
+artifact_dir: ./artifacts
+
+playwright:
+  browser: chromium          # chromium | firefox | webkit
+  headless: true
+  slow_mo: 0
+  timeout: 30000             # ms – default action timeout
+  trace: retain-on-failure   # on | off | retain-on-failure
+
+logging:
+  level: INFO
+  format: "%(asctime)s | %(levelname)-8s | %(name)s | %(message)s"
+  file: ./artifacts/runs/agent.log
+
+retry:
+  max_attempts: 3
+  delay_seconds: 2
+  backoff_factor: 2.0
+
+locator_hierarchy:
+  - data-testid
+  - role
+  - css
+  - text
+  - xpath
+
+report:
+  formats:
+    - html
+    - json
+    - junit
+  include_screenshots: true
+  include_traces: true
+  include_videos: false

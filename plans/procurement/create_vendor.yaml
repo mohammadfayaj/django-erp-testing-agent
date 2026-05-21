@@ -1,0 +1,36 @@
+name: procurement_create_vendor_flow
+department: procurement
+role: purchase_manager
+priority: high
+environment: staging
+
+preconditions:
+  login_required: true
+  company: "Alamdar Vapotherm Co Ltd"
+  fiscal_year: 2026
+
+steps:
+  - action: navigate
+    data:
+      module: procurement
+      sub_module: vendors
+
+  - action: create_vendor
+    data:
+      vendor_name: "Auto Vendor {{ run_id }}"
+      vat_number: "300000000000003"
+      country: "SA"
+      city: "Riyadh"
+      payment_terms: "Net 30"
+
+  - action: verify_record
+    target: vendor
+    expected_status: "Active"
+
+assertions:
+  - type: record_exists
+    model: vendor
+    name_field: vendor_name
+    name_value: "Auto Vendor {{ run_id }}"
+  - type: ui_contains
+    text: "Saved successfully"

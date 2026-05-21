@@ -1,0 +1,39 @@
+name: hr_create_employee_flow
+department: hr
+role: hr_manager
+priority: high
+environment: staging
+
+preconditions:
+  login_required: true
+  company: "Alamdar Vapotherm Co Ltd"
+  fiscal_year: 2026
+
+steps:
+  - action: navigate
+    data:
+      module: hr
+      sub_module: employees
+
+  - action: create_employee
+    data:
+      first_name: "Auto"
+      last_name: "Employee {{ run_id }}"
+      national_id: "1{{ run_id_numeric }}"
+      department: "Engineering"
+      job_title: "Software Engineer"
+      hire_date: "{{ today }}"
+      contract_type: "Full-Time"
+      salary: 8000.00
+
+  - action: verify_record
+    target: employee
+    expected_status: "Active"
+
+assertions:
+  - type: record_exists
+    model: employee
+    name_field: last_name
+    name_value: "Employee {{ run_id }}"
+  - type: ui_contains
+    text: "Saved successfully"

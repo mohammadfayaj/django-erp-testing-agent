@@ -1,0 +1,44 @@
+name: accounting_generate_financial_statement_flow
+department: accounting
+role: finance_manager
+priority: high
+environment: staging
+
+preconditions:
+  login_required: true
+  company: "Alamdar Vapotherm Co Ltd"
+  fiscal_year: 2026
+
+steps:
+  - action: navigate
+    data:
+      module: accounting
+      sub_module: financial_statements
+
+  - action: generate_balance_sheet
+    data:
+      as_of_date: "{{ today }}"
+      company: "Alamdar Vapotherm Co Ltd"
+
+  - action: capture_screenshot
+    data:
+      filename: "balance_sheet_{{ run_id }}.png"
+
+  - action: generate_profit_loss
+    data:
+      from_date: "{{ fiscal_year_start }}"
+      to_date: "{{ today }}"
+      company: "Alamdar Vapotherm Co Ltd"
+
+  - action: capture_screenshot
+    data:
+      filename: "profit_loss_{{ run_id }}.png"
+
+assertions:
+  - type: ui_contains
+    text: "Balance Sheet"
+  - type: field_not_empty
+    field: total_assets
+  - type: business_rule
+    rule: assets_equal_liabilities_equity
+    model: balance_sheet
